@@ -11,7 +11,7 @@ export async function fetchDateCount() {
     }
 }
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 1000;
 
 export async function fetchDate(currentPage:number) {
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -28,7 +28,7 @@ export async function fetchWeiboByDate(queryDate:Date | string) {
     try{
         let query ;
         if (queryDate instanceof Date){
-            query = `${queryDate.getFullYear()}-${queryDate.getMonth()}-${queryDate.getDay()+1}`;
+            query = dateToString(queryDate)
         }else{
             query = queryDate;
         }
@@ -38,4 +38,8 @@ export async function fetchWeiboByDate(queryDate:Date | string) {
         console.error('database error:',error);
         throw new Error(`Failed to fetch Date count ${error}`);
     }
+}
+
+export function dateToString(d:Date){
+    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()+1}`
 }
