@@ -1,12 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+
+
 export const metadata: Metadata = {
   title: "weibo history",
-  description: "history of weibo hot events"
+  description: "history of weibo hot events",
+};
+
+export const viewport: Viewport = {
+  themeColor: 'black',
+  initialScale: 1,
+  width:'device-width'
 };
 
 export default function RootLayout({

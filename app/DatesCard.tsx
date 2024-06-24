@@ -1,26 +1,47 @@
-import Link from "next/link";
-import { dateToString, fetchDate } from "./lib/data";
-import clsx from 'clsx';
+"use client";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useSearchParams } from "next/navigation";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
+import { useRouter } from "next/navigation";
+import { defaultDate } from "./utils";
+import { Button } from "@mui/material";
+import { useState } from "react";
 
-export default async function DatesCard({searchParams,}:{
-    searchParams?:{
-      date?:string;
-    }
-  }){
-    const queryDate = searchParams?.date || '2022-03-31';
-    const dates = await fetchDate(1);
-    return <div >
-        <div className="flex flex-row flex-wrap justify-start space-x-2 text-teal-600">
-        {dates.map((d)=>{
-            return <Link href={`/?date=${dateToString(d.date)}`} className={clsx(
-                'hover:text-blue-400',
-                {
-                  'text-red-700': dateToString(d.date) == queryDate
-                }
-                )} key={d.date.toDateString()}>{dateToString(d.date)}</Link>
-        })}
-        </div>
-        
-    </div>;
+export default function DatesCard() {
+  const date = useSearchParams().get("date") || defaultDate;
+  const router = useRouter();
+  const [dj, setDJ] = useState(dayjs(date, "YYYYMMDD"));
+
+  const onChange = (value: Dayjs) => {
+    setDJ(value);
+    router.push(`/?date=${value.format("YYYYMMDD")}`);
+  };
+
+  const preClick = ()=>{
+    const nd  = dj.subtract(1,'day')
+    setDJ(nd);
+    router.push(`/?date=${nd.format('YYYYMMDD')}`)
+  }
+  const nextClick = ()=>{
+    const nd  = dj.add(1,'day')
+    setDJ(nd);
+    router.push(`/?date=${nd.format('YYYYMMDD')}`)
+  }
+  return (
+    <div className="flex flex-row justify-center items-center mt-10 mb-10">
+      <Button onClick={()=>{preClick()}}>pre</Button>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          onChange={(x: any) => {
+            onChange(x);
+          }}
+          value={dj}
+          defaultValue={dj}
+        />
+      </LocalizationProvider>
+      <Button onClick={()=>{nextClick()}}>next</Button>
+    </div>
+  );
 }

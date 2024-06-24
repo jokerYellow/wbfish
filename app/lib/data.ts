@@ -26,13 +26,14 @@ export async function fetchDate(currentPage:number) {
 
 export async function fetchWeiboByDate(queryDate:Date | string) {
     try{
-        let query ;
+        let query : string;
         if (queryDate instanceof Date){
             query = dateToString(queryDate)
         }else{
             query = queryDate;
         }
-        const weibos = await sql.query<Weibo>(`select weibos.id,weibos.content,weibos.href,weibos.date  from weibos where date=$1`,[query]);
+        const queryDate_str = query.substring(0,4)+'-'+query.substring(4,6)+'-'+query.substring(6,8);
+        const weibos = await sql.query<Weibo>(`select weibos.id,weibos.content,weibos.href,weibos.date  from weibos where date=$1`,[queryDate_str]);
         return weibos.rows;
     }catch(error){
         console.error('database error:',error);
@@ -41,5 +42,10 @@ export async function fetchWeiboByDate(queryDate:Date | string) {
 }
 
 export function dateToString(d:Date){
-    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()+1}`
+    return d.toISOString().split('T')[0];
+}
+
+export function smallToBig(query :string){
+    const queryDate_str = query.substring(0,4)+'-'+query.substring(4,6)+'-'+query.substring(6,8);
+    return queryDate_str;
 }
