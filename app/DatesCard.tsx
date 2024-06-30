@@ -35,6 +35,7 @@ export default function DatesCard() {
         onClick={() => {
           preClick();
         }}
+         className="text-slate-800"
       >
         pre
       </Button>
@@ -51,6 +52,7 @@ export default function DatesCard() {
         onClick={() => {
           nextClick();
         }}
+        className="text-slate-800"
       >
         next
       </Button>
