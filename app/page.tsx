@@ -32,7 +32,7 @@ export default async function Page({
               <a
                 href={d.href}
                 target="_blank"
-                className="antialiased nav-link  hover:text-green-800"
+                className="antialiased nav-link hover:text-blue-800"
               >
                 {d.content}
               </a>
