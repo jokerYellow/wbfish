@@ -19,7 +19,7 @@ export default async function Page({
     date?: string;
   };
 }) {
-  const queryDate = searchParams?.date || defaultDate;
+  const queryDate = searchParams?.date || defaultDate();
   const weibos = await fetchWeiboByDate(queryDate);
   const dj = dayjs(queryDate, "YYYYMMDD");
   return (

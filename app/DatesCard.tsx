@@ -10,7 +10,7 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 
 export default function DatesCard() {
-  const date = useSearchParams().get("date") || defaultDate;
+  const date = useSearchParams().get("date") || defaultDate();
   const router = useRouter();
   const [dj, setDJ] = useState(dayjs(date, "YYYYMMDD"));
 
@@ -19,19 +19,25 @@ export default function DatesCard() {
     router.push(`/?date=${value.format("YYYYMMDD")}`);
   };
 
-  const preClick = ()=>{
-    const nd  = dj.subtract(1,'day')
+  const preClick = () => {
+    const nd = dj.subtract(1, "day");
     setDJ(nd);
-    router.push(`/?date=${nd.format('YYYYMMDD')}`)
-  }
-  const nextClick = ()=>{
-    const nd  = dj.add(1,'day')
+    router.push(`/?date=${nd.format("YYYYMMDD")}`);
+  };
+  const nextClick = () => {
+    const nd = dj.add(1, "day");
     setDJ(nd);
-    router.push(`/?date=${nd.format('YYYYMMDD')}`)
-  }
+    router.push(`/?date=${nd.format("YYYYMMDD")}`);
+  };
   return (
     <div className="flex flex-row justify-center items-center mt-10 mb-10">
-      <Button onClick={()=>{preClick()}}>pre</Button>
+      <Button
+        onClick={() => {
+          preClick();
+        }}
+      >
+        pre
+      </Button>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           onChange={(x: any) => {
@@ -41,7 +47,13 @@ export default function DatesCard() {
           defaultValue={dj}
         />
       </LocalizationProvider>
-      <Button onClick={()=>{nextClick()}}>next</Button>
+      <Button
+        onClick={() => {
+          nextClick();
+        }}
+      >
+        next
+      </Button>
     </div>
   );
 }
