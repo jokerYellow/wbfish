@@ -30,12 +30,12 @@ export default function DatesCard() {
     router.push(`/?date=${nd.format("YYYYMMDD")}`);
   };
   return (
-    <div className="flex flex-row justify-center items-center mt-10 mb-10">
+    <div className="flex flex-row justify-center items-center mt-10 mb-10 text-white">
       <Button
         onClick={() => {
           preClick();
         }}
-         className="text-slate-800"
+        className="text-white"
       >
         pre
       </Button>
@@ -52,7 +52,7 @@ export default function DatesCard() {
         onClick={() => {
           nextClick();
         }}
-        className="text-slate-800"
+        className="text-white"
       >
         next
       </Button>
