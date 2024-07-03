@@ -5,6 +5,19 @@ import { Weibo } from "./lib/definitions";
 import { defaultDate } from "./utils";
 import dayjs from "dayjs";
 
+/**
+ * Removes duplicate Weibo objects from an array based on their content.
+ * @param weibos - The array of Weibo objects.
+ * @returns An array of Weibo objects with duplicates removed.
+ */
+function keepMultipleOnyOnce(weibos: Weibo[]): Weibo[] {
+  const weiboMap = new Map<string, Weibo>();
+  weibos.forEach((weibo) => {
+    weiboMap.set(weibo.content, weibo);
+  });
+  return Array.from(weiboMap.values());
+}
+
 export default async function Page({
   searchParams,
 }: {
@@ -16,8 +29,9 @@ export default async function Page({
 
   const currentDate = dayjs();
   const selectedDate = dayjs(queryDate, "YYYYMMDD");
-  const weibos = await fetchWeiboByDate(queryDate);
-
+  const result = await fetchWeiboByDate(queryDate);
+  const weibos = keepMultipleOnyOnce(result);
+  console.log(`show count:${weibos.length}, fetch count:${result.length}`);
   return (
     <main className="flex flex-col min-h-screen">
       <div className="flex-none bg_header_color">

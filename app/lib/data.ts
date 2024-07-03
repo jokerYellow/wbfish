@@ -44,8 +44,3 @@ export async function fetchWeiboByDate(queryDate:Date | string) {
 export function dateToString(d:Date){
     return d.toISOString().split('T')[0];
 }
-
-export function smallToBig(query :string){
-    const queryDate_str = query.substring(0,4)+'-'+query.substring(4,6)+'-'+query.substring(6,8);
-    return queryDate_str;
-}
