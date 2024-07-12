@@ -1,4 +1,4 @@
-import { Weibo, WeiboDate } from "./definitions";
+import { EventWeibo, Weibo, WeiboDate } from "./definitions";
 import {sql} from '@vercel/postgres';
 
 export async function fetchDateCount() {
@@ -33,7 +33,17 @@ export async function fetchWeiboByDate(queryDate:Date | string) {
             query = queryDate;
         }
         const queryDate_str = query.substring(0,4)+'-'+query.substring(4,6)+'-'+query.substring(6,8);
-        const weibos = await sql.query<Weibo>(`select weibos.id,weibos.content,weibos.href,weibos.date  from weibos where date=$1`,[queryDate_str]);
+        const weibos = await sql.query<EventWeibo>(`select weibos.id,weibos.content,weibos.href,weibos.date  from weibos where date=$1`,[queryDate_str]);
+        return weibos.rows;
+    }catch(error){
+        console.error('database error:',error);
+        throw new Error(`Failed to fetch Date count ${error}`);
+    }
+}
+
+export async function fetchAllWeibos(){
+    try{
+        const weibos = await sql.query<Weibo>(`select weibo.id, weibo.authorname as "authorName",weibo.href,weibo.authorid,weibo.content,weibo.retweetcontent as "retweetContent",weibo.date,weibo.likenumber from weibo `);
         return weibos.rows;
     }catch(error){
         console.error('database error:',error);

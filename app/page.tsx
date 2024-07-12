@@ -1,7 +1,7 @@
 import DatesCard from "./DatesCard";
 
 import { fetchWeiboByDate } from "./lib/data";
-import { Weibo } from "./lib/definitions";
+import { EventWeibo } from "./lib/definitions";
 import { defaultDate } from "./utils";
 import dayjs from "dayjs";
 
@@ -10,8 +10,8 @@ import dayjs from "dayjs";
  * @param weibos - The array of Weibo objects.
  * @returns An array of Weibo objects with duplicates removed.
  */
-function keepMultipleOnyOnce(weibos: Weibo[]): Weibo[] {
-  const weiboMap = new Map<string, Weibo>();
+function keepMultipleOnyOnce(weibos: EventWeibo[]): EventWeibo[] {
+  const weiboMap = new Map<string, EventWeibo>();
   weibos.forEach((weibo) => {
     weiboMap.set(weibo.content, weibo);
   });
@@ -50,7 +50,7 @@ export default async function Page({
   );
 }
 
-function WeiboList({ weibos }: { weibos: Weibo[] }) {
+function WeiboList({ weibos }: { weibos: EventWeibo[] }) {
   return (
     <ul className="flex gap-3 flex-row grow flex-wrap justify-start text-gray-700 list-decimal list-inside text-sm font-sanf italic">
       {weibos.map((d) => (
