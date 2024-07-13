@@ -1,8 +1,14 @@
 import React from 'react';
 import { fetchAllWeibos } from '../lib/data';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone' // 导入插件
+import utc from 'dayjs/plugin/utc' // 导入插件
 
 const Page: React.FC = async () => {
     const weibos = await fetchAllWeibos()
+    dayjs.extend(timezone)
+    dayjs.extend(utc)
+    const refreshTime = dayjs().tz("Asia/Shanghai").format("YYYYMMDD HH:mm:ss");
     const items = weibos.reverse().map((weibo) => {
         return (
             <div key={weibo.id} className="bg-gray-100 p-2 mb-2 rounded-lg">
@@ -17,6 +23,7 @@ const Page: React.FC = async () => {
 
     return (
         <div >
+            <p className='text-black'>{refreshTime}</p>
             {items}
         </div>
     );
