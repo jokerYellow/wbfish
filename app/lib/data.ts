@@ -43,7 +43,7 @@ export async function fetchWeiboByDate(queryDate:Date | string) {
 
 export async function fetchAllWeibos(){
     try{
-        const weibos = await sql.query<Weibo>(`select weibo.id, weibo.authorname as "authorName",weibo.href,weibo.authorid,weibo.content,weibo.retweetcontent as "retweetContent",weibo.date,weibo.likenumber from weibo `);
+        const weibos = await sql.query<Weibo>(`select weibo.id, weibo.authorname as "authorName",weibo.href,weibo.authorid as "authorId",weibo.content,weibo.retweetcontent as "retweetContent",weibo.date,weibo.likenumber,weibo.retweetauthor as "retweetAuthor" from weibo `);
         return weibos.rows;
     }catch(error){
         console.error('database error:',error);

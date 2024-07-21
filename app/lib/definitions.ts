@@ -13,6 +13,7 @@ export class Weibo {
   authorId: string;
   content: string;
   retweetContent: string;
+  retweetAuthor: string;
   date: Date;
   likeNumber: string;
 
@@ -25,10 +26,11 @@ export class Weibo {
     this.retweetContent = "";
     this.date = new Date();
     this.likeNumber = "";
+    this.retweetAuthor = "";
   }
 
   toString(): string {
-    return `authorName:${this.authorName} href:${this.href} authorId:${this.authorId} content:${this.content} retweetContent:${this.retweetContent} date:${this.date} likeNumber:${this.likeNumber}`;
+    return `authorName:${this.authorName} href:${this.href} authorId:${this.authorId} content:${this.content} retweetContent:${this.retweetContent} date:${this.date} likeNumber:${this.likeNumber} retweetAuthor:${this.retweetAuthor}`;
   }
 }
 
