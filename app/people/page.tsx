@@ -44,7 +44,6 @@ const Page: React.FC = async () => {
 
   return (
     <div className="grid gap-4">
-      <p className="text-black">{refreshTime}</p>
       {items}
     </div>
   );
