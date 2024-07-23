@@ -9,27 +9,35 @@ const Page: React.FC = async () => {
   dayjs.extend(timezone);
   dayjs.extend(utc);
   const refreshTime = dayjs().tz("Asia/Shanghai").format("YYYYMMDD HH:mm:ss");
-  const items = weibos.reverse().map((weibo) => {
+  const items = weibos.map((weibo) => {
     return (
       <div
         key={weibo.id}
         className="bg-slate-100 p-2 rounded-lg font-sans antialiased  text-gray-800"
       >
-        <div className="text-black text-lg relative mb-3">
-          <a href={"https://weibo.com/u/" + weibo.authorId}>
-            {weibo.authorName}{" "}
-          </a>
-          <span className=" text-xs inline-block">
-            {weibo.date.toLocaleString()}
-          </span>
-          <a
-            href={weibo.href}
-            target="_blank"
-            className="absolute text-xs inline-block right-0"
-          >
-            原微博
-          </a>
-          <p className=" text-base">{weibo.content}</p>
+        <div className="text-black relative mb-3">
+          <div className="flex justify-start content-start items-baseline gap-3">
+            <a href={"https://weibo.com/u/" + weibo.authorId}>
+              {weibo.authorName}{" "}
+            </a>
+            <span className="text-xs ">
+              {weibo.date.toLocaleString()}
+            </span>
+            <div className="grow"></div>
+            <a
+              href={weibo.href}
+              target="_blank"
+              className="text-xs"
+            >
+              原微博
+            </a>
+          </div>
+
+          <p className=" text-base">
+            {weibo.content.endsWith("Translate content")
+              ? weibo.content.slice(0, -"Translate content".length)
+              : weibo.content}
+          </p>
         </div>
 
         {weibo.retweetContent && (
@@ -42,11 +50,7 @@ const Page: React.FC = async () => {
     );
   });
 
-  return (
-    <div className="grid gap-4">
-      {items}
-    </div>
-  );
+  return <div className="grid gap-4">{items}</div>;
 };
 
 export const revalidate = 10;
