@@ -13,14 +13,14 @@ export function formatTimeAgo(date: Date): string {
   dayjs.extend(utc);
   dayjs().tz("Asia/Shanghai");
   const now = dayjs().utcOffset(8);
-  const postDate = dayjs(date);
+  const postDate = dayjs(date).utcOffset(8);
   const diff = now.diff(postDate, "minute");
 
   if (diff < 60) {
-    return `${diff} minutes ago ${now.format("YYYY-MM-DD HH:mm")}`;
+    return `${diff} minutes ago ${now.format("YYYY-MM-DD HH:mmZ[Z]")} ${postDate.format("YYYY-MM-DD HH:mmZ[Z]")}`;
   } else if (diff < 1440) {
     const hours = Math.floor(diff / 60);
-    return `${hours} hours ago ${now.format("YYYY-MM-DD HH:mm")}`;
+    return `${hours} hours ago ${now.format("YYYY-MM-DD HH:mmZ[Z]")} ${postDate.format("YYYY-MM-DD HH:mmZ[Z]")}`;
   } else {
     return postDate.format("YYYY-MM-DD HH:mm");
   }
