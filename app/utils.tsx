@@ -8,4 +8,20 @@ function currentDate() {
     return dayjs().tz("Asia/Shanghai").format("YYYYMMDD");
 }
 
+
+export function formatTimeAgo(date: Date): string {
+    const now = dayjs();
+    const postDate = dayjs(date);
+    const diff = now.diff(postDate, "minute");
+
+    if (diff < 60) {
+      return `${diff} minutes ago`;
+    } else if (diff < 1440) {
+      const hours = Math.floor(diff / 60);
+      return `${hours} hours ago`;
+    } else {
+      return postDate.format("YYYY-MM-DD HH:mm");
+    }
+  }
+
 export const defaultDate = currentDate;

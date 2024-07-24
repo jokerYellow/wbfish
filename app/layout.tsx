@@ -6,8 +6,8 @@ import Navi from "./Navi";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "weibo history",
-  description: "history of weibo hot events",
+  title: "latter",
+  description: "read what you want",
 };
 
 export const viewport: Viewport = {
@@ -15,7 +15,6 @@ export const viewport: Viewport = {
   initialScale: 1,
   width:'device-width'
 };
-
 
 export default function RootLayout({
   children,
