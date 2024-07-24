@@ -10,7 +10,7 @@ function currentDate() {
 
 
 export function formatTimeAgo(date: Date): string {
-    const now = dayjs();
+    const now = dayjs().tz("Asia/Shanghai");
     const postDate = dayjs(date);
     const diff = now.diff(postDate, "minute");
 
