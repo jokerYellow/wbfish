@@ -5,7 +5,7 @@ import utc from "dayjs/plugin/utc"; // 导入插件
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-const timeZone = process.env.TZ || "Asia/Shanghai"; // 从环境变量中获取时区，默认使用 UTC
+const timeZone = "Asia/Shanghai"; // 从环境变量中获取时区，默认使用 UTC
 const offset = process.env.offset || "0";
 
 function currentDate() {
