@@ -2,17 +2,18 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone"; // 导入插件
 import utc from "dayjs/plugin/utc"; // 导入插件
 
+dayjs.extend(timezone);
+dayjs.extend(utc);
+
+const timeZone = process.env.TZ || "UTC"; // 从环境变量中获取时区，默认使用 UTC
+
 function currentDate() {
-  dayjs.extend(timezone);
-  dayjs.extend(utc);
-  return dayjs().tz("Asia/Shanghai").format("YYYYMMDD");
+  return dayjs().tz(timeZone).format("YYYYMMDD");
 }
 
 export function formatTimeAgo(date: Date): string {
-  dayjs.extend(timezone);
-  dayjs.extend(utc);
-  const now = dayjs().tz("Asia/Shanghai");
-  const postDate = dayjs(date).tz("Asia/Shanghai");
+  const now = dayjs().tz(timeZone);
+  const postDate = dayjs(date).tz(timeZone);
   const diff = now.diff(postDate, "minute");
 
   if (diff < 60) {
