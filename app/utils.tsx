@@ -6,6 +6,7 @@ dayjs.extend(timezone);
 dayjs.extend(utc);
 
 const timeZone = process.env.TZ || "Asia/Shanghai"; // 从环境变量中获取时区，默认使用 UTC
+const offset = process.env.offset || "0";
 
 function currentDate() {
   return dayjs().tz(timeZone).format("YYYYMMDD");
@@ -13,7 +14,8 @@ function currentDate() {
 
 export function formatTimeAgo(date: Date): string {
   const now = dayjs().tz(timeZone);
-  const postDate = dayjs(date).tz(timeZone);
+  
+  const postDate = dayjs(date).tz(timeZone).add(Number(offset), "hour");
   const diff = now.diff(postDate, "minute");
 
   if (diff < 60) {
