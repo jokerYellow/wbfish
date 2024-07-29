@@ -69,7 +69,7 @@ const Page = async ({
   return (
     <div>
       <div className="grid gap-4">{items}</div>
-      <div className="flex justify-center gap-4 my-3">
+      <div className="flex justify-center gap-4 mt-3 mb-10">
         {page > 1 && <a href={`?page=${page - 1}&size=${size}`}>上一页</a>}
         <span className="text-blue-500">
           第{page}/{Math.ceil(sum / size)}页
