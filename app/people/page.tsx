@@ -24,9 +24,9 @@ const Page = async ({
   dayjs.extend(utc);
   const items = weibos.map((weibo) => {
     return (
-      <div
+      <li
         key={weibo.id}
-        className="bg-slate-100 p-2 rounded-sm font-sans antialiased text-gray-700"
+        className="list-none bg-slate-100 transition duration-200 ease-in-out hover:bg-blue-100 p-2 rounded-sm font-sans antialiased text-gray-700 group"
       >
         <div className="relative grid gap-1">
           <div className="flex justify-start content-start items-baseline gap-3">
@@ -57,26 +57,34 @@ const Page = async ({
         </div>
 
         {weibo.retweetContent && (
-          <div className="grid gap-1 bg-slate-200 p-2 rounded-sm mt-2">
+          <div className="grid gap-1 bg-slate-200 last:group-hover:bg-blue-200 p-2 rounded-sm mt-2 transition duration-200 ease-in-out">
             <p className="text-gray-800 font-bold">{weibo.retweetAuthor}</p>
             <p className=" text-base ">{weibo.retweetContent}</p>
           </div>
         )}
-      </div>
+      </li>
     );
   });
 
   return (
     <div>
-      <div className="grid gap-4">{items}</div>
-      <div className="flex justify-center gap-4 mt-3 mb-10">
-        {page > 1 && <a href={`?page=${page - 1}&size=${size}`}>上一页</a>}
-        <span className="text-blue-500">
+      <ul className="grid gap-4">{items}</ul>
+      <div className="flex justify-center gap-4 mt-3 mb-20 md:mb-3 text-gray-500">
+        {page > 1 ? (
+          <a href={`?page=${page - 1}&size=${size}`} className="text-gray-600">上一页</a>
+        ) : (
+          <span className="text-gray-400 cursor-not-allowed">上一页</span>
+        )}
+        <span className="">
           第{page}/{Math.ceil(sum / size)}页
         </span>
-        <span className="text-blue-500">每页{size}条</span>
-        <span className="text-blue-500">总共{sum}条</span>
-        <a href={`?page=${page + 1}&size=${size}`}>下一页</a>
+        <span className="">每页 {size} 条</span>
+        <span className="">总共 <code>{sum}</code> 条</span>
+        {page < Math.ceil(sum / size) ? (
+          <a href={`?page=${page + 1}&size=${size}`} className="text-gray-600">下一页</a>
+        ) : (
+          <span className="text-gray-400 cursor-not-allowed">下一页</span>
+        )}
       </div>
     </div>
   );
