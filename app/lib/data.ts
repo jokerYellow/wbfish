@@ -50,12 +50,18 @@ export async function fetchWeiboByDate(queryDate: Date | string) {
   }
 }
 
-export async function fetchAllWeibos(page: number = 0, size: number = 10) {
+export async function fetchAllWeibos(
+  page: number = 0,
+  size: number = 10,
+  search: string = ""
+) {
   try {
     const weibos = await sql.query<Weibo>(
       `select
        weibo.id, weibo.authorname as "authorName",weibo.href,weibo.authorid as "authorId",weibo.content,weibo.retweetcontent as "retweetContent",weibo.date,weibo.likenumber,weibo.retweetauthor as "retweetAuthor" 
-      from weibo order by weibo.date desc limit ${size} offset ${page * size}`
+      from weibo
+       where (weibo.content ilike '%${search}%' or weibo.retweetcontent ilike '%${search}%' or weibo.authorname ilike '%${search}%')
+      order by weibo.date desc limit ${size} offset ${page * size}`
     );
     return weibos.rows;
   } catch (error) {
@@ -64,12 +70,14 @@ export async function fetchAllWeibos(page: number = 0, size: number = 10) {
   }
 }
 
-export async function fetchAllCount() {
+export async function fetchAllCount(search: string = "") {
   try {
     const weibos = await sql.query<any>(
       `select
        count(*) as count
-      from weibo `
+      from weibo 
+      where (weibo.content ilike '%${search}%' or weibo.retweetcontent ilike '%${search}%' or weibo.authorname ilike '%${search}%')
+      `
     );
     return weibos.rows[0].count;
   } catch (error) {

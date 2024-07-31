@@ -5,6 +5,35 @@ import timezone from "dayjs/plugin/timezone"; // 导入插件
 import utc from "dayjs/plugin/utc"; // 导入插件
 import { formatTimeAgo } from "../utils";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+
+function PageNation(page: number, size: number, sum: any) {
+  return (
+    <div className="flex justify-center gap-4 mt-3 mb-20 md:mb-3 text-gray-500">
+      {page > 1 ? (
+        <Link href={`?page=${page - 1}&size=${size}`} className="text-gray-600">
+          上一页
+        </Link>
+      ) : (
+        <span className="text-gray-400 cursor-not-allowed">上一页</span>
+      )}
+      <span className="">
+        第{page}/{Math.ceil(sum / size)}页
+      </span>
+      <span className="">每页 {size} 条</span>
+      <span className="">
+        总共 <code>{sum}</code> 条
+      </span>
+      {page < Math.ceil(sum / size) ? (
+        <Link href={`?page=${page + 1}&size=${size}`} className="text-gray-600">
+          下一页
+        </Link>
+      ) : (
+        <span className="text-gray-400 cursor-not-allowed">下一页</span>
+      )}
+    </div>
+  );
+}
 
 const Page = async ({
   params,
@@ -15,11 +44,12 @@ const Page = async ({
 }) => {
   let page = parseInt(searchParams["page"] ?? "1", 10);
   let size = parseInt(searchParams["size"] ?? "10", 10);
+  let searchValue = searchParams["search"] ?? "";
   if (page < 1 || size < 1) {
     redirect("/people?page=1");
   }
-  const weibos = await fetchAllWeibos(page - 1, size);
-  const sum = await fetchAllCount();
+  const weibos = await fetchAllWeibos(page - 1, size, searchValue);
+  const sum = await fetchAllCount(searchValue);
   dayjs.extend(timezone);
   dayjs.extend(utc);
   const items = weibos.map((weibo) => {
@@ -48,7 +78,6 @@ const Page = async ({
               原微博
             </a>
           </div>
-
           <p className="text-base">
             {weibo.content.endsWith("Translate content")
               ? weibo.content.slice(0, -"Translate content".length)
@@ -66,26 +95,25 @@ const Page = async ({
     );
   });
 
+  const change = (e: any) => {
+    e.preventDefault();
+    const search = e.target.search.value;
+    redirect("/people?search=" + search);
+  };
+
   return (
     <div>
+      <form className="flex mb-4 justify-center" action="/people">
+        <input
+          name="search"
+          type="text"
+          className="rounded-md text-gray-500 p-2 border-gray-800  border-2 "
+          placeholder={"bling"}
+          defaultValue={searchValue}
+        />
+      </form>
       <ul className="grid gap-4">{items}</ul>
-      <div className="flex justify-center gap-4 mt-3 mb-20 md:mb-3 text-gray-500">
-        {page > 1 ? (
-          <a href={`?page=${page - 1}&size=${size}`} className="text-gray-600">上一页</a>
-        ) : (
-          <span className="text-gray-400 cursor-not-allowed">上一页</span>
-        )}
-        <span className="">
-          第{page}/{Math.ceil(sum / size)}页
-        </span>
-        <span className="">每页 {size} 条</span>
-        <span className="">总共 <code>{sum}</code> 条</span>
-        {page < Math.ceil(sum / size) ? (
-          <a href={`?page=${page + 1}&size=${size}`} className="text-gray-600">下一页</a>
-        ) : (
-          <span className="text-gray-400 cursor-not-allowed">下一页</span>
-        )}
-      </div>
+      {PageNation(page, size, sum)}
     </div>
   );
 };
