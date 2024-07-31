@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Navi></Navi>
-        <main className="container mx-auto mt-20 text-white">{children}</main>
+        <main className="container mx-auto text-white">{children}</main>
       </body>
     </html>
   );

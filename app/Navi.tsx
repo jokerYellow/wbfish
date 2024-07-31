@@ -12,7 +12,7 @@ function NewLink({ href, children }: Readonly<{ href: string; children: React.Re
   export default function Navi() {
     return (
       //add bottom shadow
-        <header className="shadow bg-white mx-auto py-6 px-10 flex flex-row gap-4 top-0 w-full z-10 fixed left-0 right-0">
+        <header className=" bg-white mx-auto py-6 px-10 flex flex-row gap-4 top-0 w-full z-10 left-0 right-0">
             <NewLink href="/people">people</NewLink>
             <NewLink href="/">events</NewLink>
           </header>
