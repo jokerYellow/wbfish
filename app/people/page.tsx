@@ -1,11 +1,12 @@
 import React from "react";
-import { fetchAllCount, fetchAllWeibos } from "../lib/data";
+import { fetchAllCount, fetchAllWeibos, fetchRandomWeibo } from "../lib/data";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone"; // 导入插件
 import utc from "dayjs/plugin/utc"; // 导入插件
 import { formatTimeAgo } from "../utils";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import WeiboItem from "../components/weiboItem";
 
 function PageNation(page: number, size: number, sum: any) {
   return (
@@ -54,64 +55,18 @@ const Page = async ({
   dayjs.extend(utc);
   const items = weibos.map((weibo) => {
     return (
-      <li
-        key={weibo.id}
-        className="list-none bg-slate-100 transition duration-200 ease-in-out hover:bg-blue-100 p-2 rounded-sm font-sans antialiased text-gray-700 group"
-      >
-        <div className="relative grid gap-1">
-          <div className="flex justify-start content-start items-baseline gap-3">
-            <a
-              href={"https://weibo.com/u/" + weibo.authorId}
-              className="text-gray-800 font-bold"
-            >
-              {weibo.authorName}{" "}
-            </a>
-            <span className="text-xs text-gray-500">
-              {formatTimeAgo(weibo.date)}
-            </span>
-            <div className="grow"></div>
-            <a
-              href={weibo.href}
-              target="_blank"
-              className="text-xs text-gray-500"
-            >
-              原微博
-            </a>
-          </div>
-          <p className="text-base">
-            {weibo.content.endsWith("Translate content")
-              ? weibo.content.slice(0, -"Translate content".length)
-              : weibo.content}
-          </p>
-        </div>
-
-        {weibo.retweetContent && (
-          <div className="grid gap-1 bg-slate-200 last:group-hover:bg-blue-200 p-2 rounded-sm mt-2 transition duration-200 ease-in-out">
-            <p className="text-gray-800 font-bold">{weibo.retweetAuthor}</p>
-            <p className=" text-base ">{weibo.retweetContent}</p>
-          </div>
-        )}
+      <li key={weibo.id} className="list-none">
+        <WeiboItem weibo={weibo} history={false} />
       </li>
     );
   });
-
-  const change = (e: any) => {
-    e.preventDefault();
-    const search = e.target.search.value;
-    redirect("/people?search=" + search);
-  };
-
+  const randomWeibo = await fetchRandomWeibo();
   return (
     <div>
-      <form className="flex mb-4 justify-center" action="/people">
-        <input
-          name="search"
-          type="text"
-          className="rounded-md text-gray-500 p-2 border-gray-800  border-2 "
-          placeholder={"bling"}
-          defaultValue={searchValue}
-        />
-      </form>
+      {/* random weibo */}
+      <div className="mb-4">
+        <WeiboItem weibo={randomWeibo} history={true} />
+      </div>
       <ul className="grid gap-4">{items}</ul>
       {PageNation(page, size, sum)}
     </div>

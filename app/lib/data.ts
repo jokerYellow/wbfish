@@ -86,6 +86,21 @@ export async function fetchAllCount(search: string = "") {
   }
 }
 
+export async function fetchRandomWeibo() {
+  try {
+    const weibos = await sql.query<Weibo>(
+      `select
+       weibo.id, weibo.authorname as "authorName",weibo.href,weibo.authorid as "authorId",weibo.content,weibo.retweetcontent as "retweetContent",weibo.date,weibo.likenumber,weibo.retweetauthor as "retweetAuthor" 
+      from weibo
+      order by random() limit 1`
+    );
+    return weibos.rows[0];
+  } catch (error) {
+    console.error("database error:", error);
+    throw new Error(`Failed to fetch Date count ${error}`);
+  }
+}
+
 export function dateToString(d: Date) {
   return d.toISOString().split("T")[0];
 }
