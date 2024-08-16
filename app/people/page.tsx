@@ -6,7 +6,7 @@ import utc from "dayjs/plugin/utc"; // 导入插件
 import { formatTimeAgo } from "../utils";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import WeiboItem from "../components/weiboItem";
+import WeiboItem from "../_components/weiboItem";
 
 function PageNation(page: number, size: number, sum: any) {
   return (
