@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { fetchAllCount, fetchAllWeibos, fetchRandomWeibo } from "../lib/data";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone"; // 导入插件
@@ -7,6 +7,7 @@ import { formatTimeAgo } from "../utils";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import WeiboItem from "../_components/weiboItem";
+import HotKeyItem from "../_components/hotKeyItem";
 
 function PageNation(page: number, size: number, sum: any) {
   return (
@@ -63,7 +64,9 @@ const Page = async ({
   const randomWeibo = await fetchRandomWeibo();
   return (
     <div>
-      {/* random weibo */}
+      <Suspense>
+        <HotKeyItem/>
+      </Suspense>
       <div className="mb-4">
         <WeiboItem weibo={randomWeibo} history={true} />
       </div>
