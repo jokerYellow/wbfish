@@ -12,8 +12,8 @@ const WeiboItem: React.FC<WeiboItemProps> = ({ weibo, history = false }) => {
     <div
       className={`${
         history ? "bg-yellow-50" : "bg-slate-100"
-      } transition duration-200 ease-in-out hover:${
-        history ? "bg-yellow-50" : "bg-blue-100"
+      } transition duration-200 ease-in-out ${
+        history ? "" : "hover:bg-blue-100"
       } p-2 rounded-sm font-sans antialiased text-gray-700 group`}
     >
       <div className="relative grid gap-1">
@@ -47,8 +47,8 @@ const WeiboItem: React.FC<WeiboItemProps> = ({ weibo, history = false }) => {
         <div
           className={`grid gap-1 ${
             history ? "bg-yellow-100" : "bg-slate-200"
-          } last:group-hover:${
-            history ? "bg-yellow-100" : "bg-blue-200"
+          } ${
+            history ? "" : "last:group-hover:bg-blue-200"
           } p-2 rounded-sm mt-2 transition duration-200 ease-in-out`}
         >
           <p className="text-gray-800 font-bold">{weibo.retweetAuthor}</p>
